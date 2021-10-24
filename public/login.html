@@ -51,7 +51,7 @@
 			console.log(response)
 			debugger
 			let { code, data, message } = response;
-			// data && (location.href = data)
+			data && (location.href = data)
 		}).catch(function (error) {
 			console.log(error)
 		});

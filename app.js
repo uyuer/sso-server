@@ -11,24 +11,24 @@ const middle = require("./middle") // 中间件
 const index = require('./routes')
 const sso = require("./sso")
 
-// const redis = require('redis')
-// const session = require('express-session')
+const redis = require('redis')
+const session = require('express-session')
 
-// let RedisStore = require('connect-redis')(session)
-// let redisClient = redis.createClient()
+let RedisStore = require('connect-redis')(session)
+let redisClient = redis.createClient()
 
-// app.use(
-// 	session({
-// 		store: new RedisStore({ client: redisClient }),
-// 		saveUninitialized: false,
-// 		secret: config.session.key,
-// 		resave: false,
-// 	})
-// )
+app.use(
+	session({
+		store: new RedisStore({ client: redisClient }),
+		saveUninitialized: false,
+		secret: config.session.key,
+		resave: false,
+	})
+)
 
 // error handler
 onerror(app)
-app.use(middle.session(app))
+// app.use(middle.session(app))
 // app.on('session:expired',(key,value,ctx) => {
 // 	console.log('session:expired')
 // 	console.log(key)

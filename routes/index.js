@@ -111,16 +111,22 @@ const doLogin = async (ctx, next) => {
 	}
 	// 如果session中有登录信息,但是没有重定向地址时
 	if (ctx.session.user != null && serviceURL == null) {
-		console.log('session.user信息:', ctx.session.user)
 		return ctx.body = '';
 	}
 	// 如果session中没有登录信息,并且存在重定向地址时
-	if (ctx.session.user != null && serviceURL != null) {
+	if (
+		ctx.session.user != null &&
+		serviceURL != null &&
+		sessionUser[ctx.session.user] != null &&
+		sessionApp[ctx.session.user] != null
+	) {
 		console.log('session.user信息:', ctx.session.user)
 		const origin = new URL(serviceURL).origin;
 		let id = ctx.session.user;
 		let intrmid = await storeApplicationInCache(id, serviceURL);
 		return ctx.body = `${serviceURL}?ssoToken=${intrmid}`
+	} else {
+		ctx.session = null;
 	}
 	return ctx.body = '';
 }
@@ -154,7 +160,6 @@ const login = async (ctx, next) => {
 	console.log(id)
 	console.log(sessionUser)
 	console.log(sessionApp)
-	ctx.cookies.set('ssoid', id, { signed: true, domain: '.uyue.club' });
 	return ctx.body = `${serviceURL}?ssoToken=${intrmid}`;
 }
 const logout = async (ctx, next) => {
