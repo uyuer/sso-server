@@ -1,11 +1,7 @@
-const db = require('./sequelize');
+const db = require('../lib/sequelize');
 const { Client } = db.models;
 
-const AUTH_HEADER = "authorization";
-const BEARER_AUTH_SCHEME = "bearer";
-
 let getClients = async function () {
-	console.log(Client, db.models)
 	let clients = await Client.findAll({
 		where: { allowe: 1 },
 		raw: true
@@ -20,8 +16,6 @@ let getClients = async function () {
 		appTokenDB: {},
 		originAppName: {},
 		alloweOrigin: {},
-		AUTH_HEADER,
-		BEARER_AUTH_SCHEME,
 	})
 	return appClients;
 }
