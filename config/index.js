@@ -2,7 +2,6 @@ require('dotenv').config({ path: '.env' }); // 版本不一样config方式不一
 
 const {
     PORT,
-    EXPIRE_TIME,
 } = process.env;
 
 const path = require('path')
@@ -13,15 +12,16 @@ const database = require('./database');
 const upload = require('./upload');
 const email = require('./email');
 const session = require('./session');
+const sso = require('./sso');
 
 // 配置, 从全局变量中读取数据
 module.exports = {
     PORT, // 项目启动端口
     ROOTPATH,
     API: '/api',
-    EXPIRE_TIME,
     database,
     upload,
     email,
     session,
+    sso,
 }

@@ -42,14 +42,13 @@
 		let urlParams = new URLSearchParams(window.location.search);
 		let serviceURL = urlParams.get('serviceURL');
 		instance({
-			url: '/sso/user/doLogin',
+			url: '/sso/doLogin',
 			method: 'POST',
 			data: {
 				serviceURL,
 			}
 		}).then(function (response) {
 			console.log(response)
-			debugger
 			let { code, data, message } = response;
 			data && (location.href = data)
 		}).catch(function (error) {
@@ -58,7 +57,7 @@
 
 		document.getElementById('logout').onclick = async () => {
 			instance({
-				url: '/sso/user/logout',
+				url: '/sso/logout',
 				method: 'POST',
 			}).then(function (response) {
 				console.log('logout', response)
@@ -70,7 +69,7 @@
 		}
 		document.getElementById('view').onclick = () => {
 			instance({
-				url: '/sso/user/view',
+				url: '/sso/view',
 				method: 'POST',
 			}).then(function (response) {
 				console.log('view', response)
@@ -80,7 +79,7 @@
 		}
 		document.getElementById('clear').onclick = () => {
 			instance({
-				url: '/sso/user/clear',
+				url: '/sso/clear',
 				method: 'POST',
 			}).then(function (response) {
 				console.log('clear', response)
@@ -96,7 +95,7 @@
 			var username = this['username'].value;
 			var password = this['password'].value;
 			instance({
-				url: '/sso/user/login',
+				url: '/sso/login',
 				method: 'POST',
 				data: {
 					username,
@@ -105,7 +104,7 @@
 				}
 			}).then(function (response) {
 				let { code, data, message } = response;
-				// location.href = data
+				location.href = data
 			}).catch(function (error) {
 				console.log(error)
 			});

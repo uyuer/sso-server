@@ -1,9 +1,11 @@
-const clientRegistration = require('./clientRegistration');
+const client = require('./client');
 const page = require('./page');
 const user = require('./user');
+const sso = require('./sso');
 
 module.exports = {
-    clientRegistration,
+    client,
+    sso,
     page,
     user,
 }

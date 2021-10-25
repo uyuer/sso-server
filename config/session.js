@@ -1,6 +1,7 @@
 const {
     SESSION_KEY,
     EXPIRE_TIME,
+    DOMAIN,
 } = process.env;
 
 const key = SESSION_KEY;
@@ -14,11 +15,11 @@ const config = {
     signed: true /** 是否签名。(默认是 true) */,
     rolling: false /** 是否每次响应时刷新Session的有效期。(默认是 false) */,
     renew: false /** 是否在Session快过期时刷新Session的有效期。(默认是 false) */,
-    domain: '.uyue.club'
+    // domain: DOMAIN,
 };
 
 module.exports = {
     key,
-    expireTime,
+    EXPIRE_TIME,
     config,
 };

@@ -2,9 +2,12 @@ const URL = require("url").URL;
 const dayjs = require('dayjs');
 
 const rules = require('../config/rules');
-const db = require('../lib/sequelize');
-const { sendEmailCode } = require('../lib/email')
 
+const db = require('../lib/sequelize');
+const encodedId = require('../lib/encodedId');
+const { getClients } = require('../lib/dict');
+const { genJwtToken } = require('../lib/jwtHelper');
+const { sendEmailCode } = require('../lib/email')
 const {
 	sessionUser,
 	sessionApp,
@@ -12,9 +15,6 @@ const {
 	deleteApplicationInCache,
 	storeApplicationInCache,
 } = require('../data');
-const encodedId = require('../lib/encodedId');
-const { getClients } = require('../lib/dict');
-const { genJwtToken } = require('../lib/jwtHelper');
 
 exports.verifytoken = async (ctx, next) => {
 	const AUTH_HEADER = "authorization";
@@ -121,6 +121,7 @@ exports.logout = async (ctx, next) => {
 }
 // 发送邮件验证码
 exports.sendregcode = async (ctx) => {
+	console.log(`请求->${pathName}->发送邮箱: ${pathRoute}.sendregcode; method: ${ctx.request.method}; url: ${ctx.request.url} `);
 	let params = ctx.verifyParams({
 		email: rules.email,
 	})
@@ -159,6 +160,7 @@ exports.sendregcode = async (ctx) => {
 
 // 用户注册
 exports.register = async (ctx) => {
+	console.log(`请求->${pathName}->注册: ${pathRoute}.register; method: ${ctx.request.method}; url: ${ctx.request.url} `);
 	let params = ctx.verifyParams({
 		email: rules.email,
 		username: rules.username,
@@ -201,3 +203,27 @@ exports.register = async (ctx) => {
 	});
 	ctx.body = true;
 };
+
+exports.view = async (ctx, next) => {
+	console.log(ctx.cookies.get('ssoid'))
+	let user = ctx.session.user;
+	let info = {
+		user: user || null,
+		sessionUser,
+		sessionApp,
+		intrmTokenCache,
+	}
+	ctx.body = info;
+}
+exports.clear = async (ctx, next) => {
+	ctx.session = null;
+	sessionUser = {}
+	sessionApp = {}
+	intrmTokenCache = {}
+	let info = {
+		sessionUser,
+		sessionApp,
+		intrmTokenCache,
+	}
+	ctx.body = info;
+}

@@ -1,5 +1,5 @@
-const getClients = require('./getClients');
-const encodedId = require('./encodedId');
+const encodedId = require('./lib/encodedId');
+const { getClients } = require('./lib/dict');
 
 let sessionUser = {};
 let sessionApp = {};

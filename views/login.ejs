@@ -49,7 +49,6 @@
 			}
 		}).then(function (response) {
 			console.log(response)
-			debugger
 			let { code, data, message } = response;
 			data && (location.href = data)
 		}).catch(function (error) {

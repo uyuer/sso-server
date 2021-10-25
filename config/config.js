@@ -7,7 +7,7 @@ const {
     DB_PASSWORD, // 目标数据库密码
     NODE_ENV
 } = process.env;
-
+// 用于sequelize-cli的配置
 const dbConfig = {
     development: {
         username: 'sso',

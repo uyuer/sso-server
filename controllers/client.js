@@ -3,7 +3,6 @@ const db = require('../lib/sequelize');
 const rules = require('../config/rules');
 
 const fn = async (ctx, next) => {
-    ctx.sso.test['xxxxx'] = true;
     let params = ctx.verifyParams({
         name: rules.client.name,
         alias: rules.client.alias,

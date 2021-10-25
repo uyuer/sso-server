@@ -9,6 +9,7 @@ const koaBody = require("koa-body");
 const config = require('./config')
 const middle = require("./middle") // 中间件
 const index = require('./routes')
+// const sso = require('./sso')
 
 // const redis = require('redis')
 // const session = require('express-session')
