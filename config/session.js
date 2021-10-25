@@ -4,7 +4,6 @@ const {
     DOMAIN,
 } = process.env;
 
-const key = SESSION_KEY;
 const expireTime = Number(EXPIRE_TIME) * 1000
 const config = {
     key: "koa:sess" /**  cookie的key。 (默认是 koa:sess) */,
@@ -19,7 +18,7 @@ const config = {
 };
 
 module.exports = {
-    key,
+    SESSION_KEY,
     EXPIRE_TIME,
     config,
 };
