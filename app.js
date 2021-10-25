@@ -64,17 +64,15 @@ app.use(views(__dirname + '/views', {
 	extension: 'ejs'
 }))
 
-// 自定义中间件
 app.use(middle.logger)
-app.use(middle.token.gatherToken)
-// app.use(middle.token.setSessionWithToken)
-// app.use(middle.token.authToken)
-app.use(middle.formatter(new RegExp(`^${config.API}`)))
-app.use(middle.formatter(new RegExp(`^${'/sso/'}`)))
 app.use(middle.param)
 app.use(middle.verifyParams)
 
-// routes
+app.use(middle.token.gatherToken)
+// app.use(middle.authUrl(new RegExp(`^${config.API}`), verifyJwtToken)) // 检查是否登录
+app.use(middle.formatter(new RegExp(`^${config.API}`)))
+app.use(middle.formatter(new RegExp(`^${'/sso/'}`)))
+
 app.use(index.routes(), index.allowedMethods())
 
 // error-handling
