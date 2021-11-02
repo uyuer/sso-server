@@ -28,6 +28,10 @@ const index = require('./routes')
 
 // error handler
 onerror(app)
+const history = require('./middle/koa2-connect-history-api-fallback');
+app.use(history({
+	verbose: true//打出转发日志
+}));
 app.use(middle.session(app))
 // app.on('session:expired',(key,value,ctx) => {
 // 	console.log('session:expired')
@@ -60,9 +64,9 @@ app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 app.use(require("koa-static")(__dirname + "/uploads"));
 
-app.use(views(__dirname + '/views', {
-	extension: 'ejs'
-}))
+// app.use(views(__dirname + '/views', {
+// 	extension: 'ejs'
+// }))
 
 app.use(middle.logger)
 app.use(middle.param)

@@ -5,7 +5,6 @@ const {
     DB_NAME, // 数据库名称
     DB_USERNAME, // 目标数据库用户名
     DB_PASSWORD, // 目标数据库密码
-    NODE_ENV
 } = process.env;
 // 用于sequelize-cli的配置
 const dbConfig = {
@@ -32,4 +31,4 @@ const dbConfig = {
     }
 }
 
-module.exports = dbConfig[NODE_ENV]
+module.exports = dbConfig

@@ -101,7 +101,7 @@ exports.login = async (ctx, next) => {
 	sessionUser[id] = info; // 将这个id与用户名以key:value的形势保存在全局变量中
 	// 是否存在serviceURL, 没有携带跳转的地址时
 	if (serviceURL == null) {
-		return ctx.body = `${ctx.protocol}://${ctx.headers.host}`;
+		return ctx.body = `http://uyue.club:9611`;
 	}
 	// 将当前用户的id,和跳转应用保存下来,并返回对应的验证ssoToken:intrmid
 	let intrmid = await storeApplicationInCache(id, serviceURL);
