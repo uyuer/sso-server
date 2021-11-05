@@ -200,7 +200,24 @@ npx sequelize-cli db:migrate:undo:all --to XXXXXXXXXXXXXX-create-posts.js
 
 #### 迁移骨架
 
-官网讲的的场景有很多，比如有创建表、添加表项、删除表项等等。这一块的详细文档我还没有找到
+以下骨架显示了一个典型的迁移文件。
+
+```
+module.exports = {
+  up: (queryInterface, Sequelize) => {
+    // logic for transforming into the new state
+  },
+  down: (queryInterface, Sequelize) => {
+    // logic for reverting the changes
+  }
+}
+```
+
+我们可以使用migration:generate. 这将xxx-migration-skeleton.js在您的迁移文件夹中创建。
+
+`npx sequelize-cli migration:generate --name migration-skeleton`
+
+比如有创建表、添加表项、删除表项等等。
 
 createTable
 
