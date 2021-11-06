@@ -54,6 +54,7 @@ exports.doLogin = async (ctx, next) => {
 	let { alloweOrigin } = await getClients();
 	const { serviceURL } = ctx.request.body;
 	// 判断来源地址是否是子系统
+	// TODO:这里有bug, 当没有serviceURL时会出现意外的错误
 	if (serviceURL) {
 		const origin = new URL(serviceURL).origin;
 		if (alloweOrigin[origin] !== true) {

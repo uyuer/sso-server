@@ -34,7 +34,7 @@
 				let { data, code, message } = error.response.data;
 				if (code === 401) {
 					alert(message)
-					return location.href = `http://sso.uyue.club:8000/login`
+					return location.href = `http://localhost:8000/login`
 				}
 			}
 			return Promise.reject(error);
@@ -64,7 +64,7 @@
 			}).catch(function (error) {
 				console.log(error)
 			}).finally(function () {
-				// location.href = `http://sso.uyue.club:8000/login?serviceURL=${location.href}`
+				// location.href = `http://localhost:8000/login?serviceURL=${location.href}`
 			});
 		}
 		document.getElementById('view').onclick = () => {
