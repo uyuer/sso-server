@@ -6,7 +6,7 @@ const {
     JWT_PRIVATE_KEY,
 } = process.env;
 
-const privateCert = fs.readFileSync(path.resolve(__dirname, "../jwtPrivate.key"));// JWT_PRIVATE_KEY.replace(/\\n/g, '\n') || fs.readFileSync(path.resolve(__dirname, "../jwtPrivate.key"));
+const privateCert ='1234'; // fs.readFileSync(path.resolve(__dirname, "../jwtPrivate.key"));// JWT_PRIVATE_KEY.replace(/\\n/g, '\n') || fs.readFileSync(path.resolve(__dirname, "../jwtPrivate.key"));
 
 module.exports = {
     ISSUER,
