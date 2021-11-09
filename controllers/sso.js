@@ -52,7 +52,6 @@ exports.verifytoken = async (ctx, next) => {
 		return ctx.body = { token };
 	} catch (error) {
 		console.log(error)
-		return ctx.body = { token: '12312312' }
 	}
 }
 exports.doLogin = async (ctx, next) => {
