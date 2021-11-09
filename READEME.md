@@ -200,7 +200,7 @@ npx sequelize-cli db:migrate:undo:all --to XXXXXXXXXXXXXX-create-posts.js
 
 #### 迁移骨架
 
-以下骨架显示了一个典型的迁移文件。
+典型的迁移文件：
 
 ```
 module.exports = {
@@ -213,11 +213,42 @@ module.exports = {
 }
 ```
 
-我们可以使用migration:generate. 这将xxx-migration-skeleton.js在您的迁移文件夹中创建。
+使用`migration:generate`. 将会在项目中的`migrations` 文件夹中创建`xxx-migration-skeleton.js`。
 
-`npx sequelize-cli migration:generate --name migration-skeleton`
+```text
+npx sequelize-cli migration:generate --name migration-skeleton
+```
 
-比如有创建表、添加表项、删除表项等等。
+传递的`queryInterface`对象可用于修改数据库。该`Sequelize`对象存储可用的数据类型，例如`STRING`或`INTEGER`。函数`up`or`down`应该返回一个`Promise`. 
+
+以下是在数据库中执行两次更改的迁移示例，使用自动管理的**事务**来确保所有指令成功执行或在失败时回滚：
+
+```
+module.exports = {
+  up: (queryInterface, Sequelize) => {
+​    return queryInterface.sequelize.transaction(t => {
+​      return Promise.all([
+​        queryInterface.addColumn('Person', 'petName', {
+​          type: Sequelize.DataTypes.STRING
+​        }, { transaction: t }),
+​        queryInterface.addColumn('Person', 'favoriteColor', {
+​          type: Sequelize.DataTypes.STRING,
+​        }, { transaction: t })
+​      ]);
+​    });
+  },
+  down: (queryInterface, Sequelize) => {
+​    return queryInterface.sequelize.transaction(t => {
+​      return Promise.all([
+​        queryInterface.removeColumn('Person', 'petName', { transaction: t }),
+​        queryInterface.removeColumn('Person', 'favoriteColor', { transaction: t })
+​      ]);
+​    });
+  }
+};
+```
+
+官网讲的的场景有很多，比如有创建表、添加表项、删除表项等等。以下为部分迁移操作名：
 
 createTable
 
@@ -229,51 +260,110 @@ removeColumn(表名,表属性,表属性配置)
 
 changeColumn(表名,表属性,表属性配置)
 
-以下是在数据库中执行两次更改的迁移示例，使用自动管理的**事务**来确保所有指令成功执行或在失败时回滚：
+#### 创建种子
+
+创建一个种子文件, 
+
+`npx sequelize-cli seed:generate --name label`
+
+数据的内容需要与表结构保持一致, 否则会迁移失败
 
 ```
 module.exports = {
-
-  up: (queryInterface, Sequelize) => {
-
-​    return queryInterface.sequelize.transaction(t => {
-
-​      return Promise.all([
-
-​        queryInterface.addColumn('Person', 'petName', {
-
-​          type: Sequelize.DataTypes.STRING
-
-​        }, { transaction: t }),
-
-​        queryInterface.addColumn('Person', 'favoriteColor', {
-
-​          type: Sequelize.DataTypes.STRING,
-
-​        }, { transaction: t })
-
-​      ]);
-
-​    });
-
-  },
-
-  down: (queryInterface, Sequelize) => {
-
-​    return queryInterface.sequelize.transaction(t => {
-
-​      return Promise.all([
-
-​        queryInterface.removeColumn('Person', 'petName', { transaction: t }),
-
-​        queryInterface.removeColumn('Person', 'favoriteColor', { transaction: t })
-
-​      ]);
-
-​    });
-
-  }
-
+ up: async (queryInterface, Sequelize) => {
+  	return queryInterface.bulkInsert('Label', [
+       {
+    ​    "id": 1,
+    ​    "label": "标签",
+    ​    "isSystemCreate": 1,
+    ​    "creatorId": 1,
+    ​    "createdAt": "2021-05-13 06:30:17",
+    ​    "updatedAt": "2021-05-13 06:30:17"
+       },
+  	]);
+ },
+ down: async (queryInterface, Sequelize) => {
+  return queryInterface.bulkDelete('Label', null, {});
+ }
 };
+```
+
+执行迁移
+
+`npx sequelize-cli db:seed:all`
+
+以下内容截取于官方文档：
+
+如果播种机正在使用任何存储，则可以撤消播种机。有两个命令可用：
+
+如果您想撤消最近的种子：
+
+```text
+npx sequelize-cli db:seed:undo
+```
+
+如果您想撤消特定种子：
+
+```text
+npx sequelize-cli db:seed:undo --seed name-of-seed-as-in-data
+```
+
+如果您想撤消所有种子：
+
+```text
+npx sequelize-cli db:seed:undo:all
+```
+
+
+
+使用OpenSSL生成RSA密钥
+
+```custom
+# 生成私钥
+openssl genrsa -out jwtPrivate.key 3072
+# 生成公钥
+openssl rsa -in jwtPrivate.key -pubout -out jwtPublic.key
+```
+
+
+
+笔记: node模块http的使用方法(项目中未使用)
+
+```
+	const postData = `globalSessionID=${globalSessionID}`
+    const options = {
+        hostname: 'sso.uyue.club',
+        port: 8000,
+        path: '/sso/user/logout',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': Buffer.byteLength(postData),
+            // Authorization: appToken
+        }
+    }
+    const req = http.request(options, (res) => {
+        console.log(`STATUS: ${res.statusCode}`);
+        console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => {
+            console.log(`BODY: ${chunk}`);
+        });
+        res.on('end', () => {
+            console.log('No more data in response.');
+            ctx.body = true;
+        });
+    });
+
+    req.on('error', (e) => {
+        console.error(`problem with request: ${e.message}`);
+        const err = new Error('请求错误');
+        err.status = 400;
+        ctx.app.emit('error', err, ctx)
+    });
+
+    // 将数据写入请求正文
+    req.write(postData);
+    req.end();
 ```
 
