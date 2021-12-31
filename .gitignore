@@ -5,6 +5,7 @@ logs/
 uploads/
 temp/
 seeders/
+.vscode/
 
 # misc
 .DS_Store
