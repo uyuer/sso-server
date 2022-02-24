@@ -63,9 +63,10 @@ exports.doLogin = async (ctx, next) => {
 	}
 	// 如果session中有登录信息,但是没有重定向地址时
 	if (ctx.session.user != null && serviceURL == null) {
+		// TODO: 这里返回到网站首页
 		return ctx.body = '';
 	}
-	// 如果session中没有登录信息,并且存在重定向地址时
+	// 如果session中有登录信息,并且存在重定向地址时
 	if (
 		ctx.session.user != null &&
 		serviceURL != null &&
